@@ -2,6 +2,11 @@ from transformers import pipeline
 import matplotlib.pyplot as plt
 import re
 qa_pipeline = pipeline("question-answering", model="deepset/roberta-base-squad2")
+
+"""
+Sanitize the input string by removing leading/trailing white spaces,
+converting to lower case, and removing special characters.
+"""
 def sanitize_input(input_string):
     # Remove leading/trailing white spaces
     input_string = input_string.strip()
@@ -11,11 +16,21 @@ def sanitize_input(input_string):
     input_string = re.sub(r'\W+', ' ', input_string)
     return input_string
 
+"""
+Use the question-answering pipeline to find the answer to the question
+within the given context.
+"""
 def Question_Answering(question, context):
     # qa_pipeline = pipeline("question-answering", model="deepset/roberta-base-squad2")
     answer = qa_pipeline({'context': context, 'question': question})
     return answer
 
+
+"""
+Handle multiple questions by sanitizing input, collecting questions,
+and using the question-answering pipeline to get answers. Visualize
+the results with confidence scores.
+"""
 def handle_multiple_questions(context):
     print("Enter the questions (type 'done' when finished):")
     questions = []
@@ -40,6 +55,9 @@ def handle_multiple_questions(context):
 
     visualize_results(questions, answers)
 
+"""
+Visualize the confidence scores of the answers for each question using a bar plot.
+"""
 def visualize_results(questions, answers):
     # Plotting confidence scores for each question
     scores = [answer['score'] for answer in answers]
@@ -52,6 +70,10 @@ def visualize_results(questions, answers):
     plt.tight_layout()
     plt.show()
 
+"""
+Simulate accuracy and ambiguity by calculating the percentage of answers
+with confidence scores above 0.5 (accuracy) and between 0.4 and 0.6 (ambiguity).
+"""
 def simulate_accuracy_and_ambiguity(answers):
     confidence_scores = [answer['score'] for answer in answers]
     accuracy_percentage = sum(score > 0.5 for score in confidence_scores) / len(confidence_scores) * 100
