@@ -1,3 +1,9 @@
+# This is a small project that I implemented after understanding basic NLP.
+# This project is my first project on NLP after my internship in Bajaj Finserv.
+
+
+
+
 from transformers import pipeline
 import matplotlib.pyplot as plt
 import re
